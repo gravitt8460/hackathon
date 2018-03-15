@@ -1,8 +1,8 @@
 contract Commission {
     address[] public commissionedLotteries;
 
-    function commissionLottery() public {
-        address newLottery = new Lottery(msg.sender);
+    function commissionLottery(uint entryFee) public {
+        address newLottery = new Lottery(entryFee, msg.sender);
         commissionedLotteries.push(newLottery);
     }
 

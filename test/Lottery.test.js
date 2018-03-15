@@ -28,10 +28,12 @@ describe("Basics", () => {
 
     commissioner.setProvider(provider);
 
-    await commissioner.methods.commissionLottery().send({
-      from: accounts[0],
-      gas: "1000000"
-    });
+    await commissioner.methods
+      .commissionLottery(web3.utils.toWei("0.02", "ether"))
+      .send({
+        from: accounts[0],
+        gas: "1000000"
+      });
 
     [
       lotteryAddress
