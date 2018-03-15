@@ -120,21 +120,37 @@ describe("Basics", () => {
 
   it("Sends money to winner and resets", async () => {
     await lottery.methods.enter().send({
-      from: accounts[0],
+      from: accounts[1],
       value: web3.utils.toWei("2", "ether"),
       gas: "1000000"
     });
 
-    const beforeBalance = await web3.eth.getBalance(accounts[0]);
+    const beforeBalance = await web3.eth.getBalance(accounts[1]);
 
     await lottery.methods.pickWinner().send({
       from: accounts[0],
       gas: "1000000"
     });
 
-    const afterBalance = await web3.eth.getBalance(accounts[0]);
+    const amountWon = await lottery.methods.amountWon().call({
+      from: accounts[1]
+    });
+
+    const isCompleted = await lottery.methods.isCompleted().call({
+      from: accounts[1]
+    });
+
+    //    console.log(await lottery.methods.getSummary().call({ from: accounts[0] }));
+    //    console.log("Amount won: ", amountWon);
+
+    const afterBalance = await web3.eth.getBalance(accounts[1]);
     const difference = afterBalance - beforeBalance;
+    //  console.log("Difference: ", difference);
+
     assert(difference > web3.utils.toWei("1.8", "ether"));
+
+    assert(amountWon >= difference);
+    assert(isCompleted);
   });
 
   it("Test commission of new lottery");
