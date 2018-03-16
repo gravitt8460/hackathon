@@ -65,8 +65,13 @@ describe("Basics", () => {
       from: accounts[0]
     });
 
+    const isCompleted = await lotter.methods.isCompleted().call({
+      from: accounts[0]
+    });
+
     assert.equal(accounts[0], players[0]);
     assert.equal(1, players.length);
+    assert(!isCompleted);
   });
 
   it("Allows multiple account to enter", async () => {
@@ -88,6 +93,12 @@ describe("Basics", () => {
     const players = await lottery.methods.getPlayers().call({
       from: accounts[0]
     });
+
+    const isCompleted = await lotter.methods.isCompleted().call({
+      from: accounts[0]
+    });
+
+    assert(!isCompleted);
 
     assert.equal(accounts[0], players[0]);
     assert.equal(accounts[1], players[1]);
@@ -140,7 +151,20 @@ describe("Basics", () => {
       from: accounts[1]
     });
 
-    //    console.log(await lottery.methods.getSummary().call({ from: accounts[0] }));
+    const summary = await lottery.methods
+      .getSummary()
+      .call({ from: accounts[0] });
+
+    const {
+      balance,
+      manager,
+      entryFee,
+      playerCount,
+      isCompleted,
+      winner,
+      amountWon
+    } = summary;
+
     //    console.log("Amount won: ", amountWon);
 
     const afterBalance = await web3.eth.getBalance(accounts[1]);

@@ -11,12 +11,12 @@ contract Lottery {
     function Lottery (uint _entryFee, address creator) public {
         isCompleted = false;
         entryFee = _entryFee;
-      //  minimumBet = _minimumBet;
         manager = creator;
     }
 
     function enter () public payable {
         require (msg.value >= entryFee);
+        require (! isCompleted);
         players.push (msg.sender);
     }
 

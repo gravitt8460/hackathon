@@ -32,6 +32,14 @@ class LotteryShow extends Component {
       winner,
       amountWon
     } = this.props;
+
+    console.log("iscompleted: ", isCompleted);
+    var isCompletedStr = "";
+    if (isCompleted) {
+      isCompletedStr = "Closed";
+    } else {
+      isCompletedStr = "Open";
+    }
     const items = [
       {
         header: manager,
@@ -66,10 +74,10 @@ class LotteryShow extends Component {
         style: { overflowWrap: "break-word" }
       },
       {
-        header: isCompleted,
-        meta: "Lottery Closed?",
+        header: isCompletedStr,
+        meta: "Lottery Status",
         description:
-          "Has the winner already been selected and closed the lottery?",
+          "Is the lottery open for entry or has it been closed (winner selected)",
         style: { overflowWrap: "break-word" }
       },
       {
