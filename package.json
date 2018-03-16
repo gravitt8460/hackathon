@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "8.6.0",
+    "npm": "5.6.0"
+  },
   "scripts": {
     "test": "mocha",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
