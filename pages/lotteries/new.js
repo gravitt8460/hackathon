@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Layout from "../../components/Layout";
 import { Form, Button, Input, Message } from "semantic-ui-react";
-import commissioner from "../../commissioner";
-import web3 from "../../web3";
+import commission from "../../ethereum/commission";
+import web3 from "../../ethereum/web3";
 import { Router } from "../../routes";
 
 class LotteryNew extends Component {
@@ -17,7 +17,7 @@ class LotteryNew extends Component {
     this.setState({ loading: true, errorMessage: "" });
     try {
       const accounts = await web3.eth.getAccounts();
-      await commissioner.methods.commissionLottery(this.state.entryFee).send({
+      await commission.methods.commissionLottery(this.state.entryFee).send({
         from: accounts[0]
       });
       Router.pushRoute("/");

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, Input, Message, Button } from "semantic-ui-react";
-import Lottery from "../lottery";
-import web3 from "../web3";
+import Lottery from "../ethereum/lottery";
+import web3 from "../ethereum/web3";
 import { Router } from "../routes";
 
 class PickWinner extends Component {

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import commissioner from "../commissioner";
+import commission from "../ethereum/commission";
 import { Card, Button } from "semantic-ui-react";
 import Layout from "../components/Layout";
 import { Link } from "../routes";
 
 class LotteryIndex extends Component {
   static async getInitialProps() {
-    const lotteries = await commissioner.methods
+    const lotteries = await commission.methods
       .getCommissionedLotteries()
       .call();
     return { lotteries };

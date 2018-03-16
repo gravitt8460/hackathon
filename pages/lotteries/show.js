@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Layout from "../../components/Layout";
-import Lottery from "../../lottery";
+import Lottery from "../../ethereum/lottery";
 import { Card, Grid } from "semantic-ui-react";
 import EnterLottery from "../../components/EnterLottery";
 import PickWinner from "../../components/PickWinner";

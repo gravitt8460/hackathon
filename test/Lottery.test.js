@@ -2,12 +2,12 @@ const assert = require("assert");
 const ganache = require("ganache-cli");
 const Web3 = require("web3");
 
-const { interface, bytecode } = require("../compile");
-const compiledCommissioner = require("../build/Commission.json");
-const compiledLottery = require("../build/Lottery.json");
+const { interface, bytecode } = require("../ethereum/compile");
+const compiledcommission = require("../ethereum/build/Commission.json");
+const compiledLottery = require("../ethereum/build/Lottery.json");
 
 let web3;
-let commissioner;
+let commission;
 let accounts;
 let provider;
 let lottery;
@@ -18,17 +18,17 @@ describe("Basics", () => {
     web3 = new Web3(provider);
     accounts = await web3.eth.getAccounts();
 
-    commissioner = await new web3.eth.Contract(
-      JSON.parse(compiledCommissioner.interface)
+    commission = await new web3.eth.Contract(
+      JSON.parse(compiledcommission.interface)
     )
       .deploy({
-        data: compiledCommissioner.bytecode
+        data: compiledcommission.bytecode
       })
       .send({ from: accounts[0], gas: "1000000" });
 
-    commissioner.setProvider(provider);
+    commission.setProvider(provider);
 
-    await commissioner.methods
+    await commission.methods
       .commissionLottery(web3.utils.toWei("0.02", "ether"))
       .send({
         from: accounts[0],
@@ -37,7 +37,7 @@ describe("Basics", () => {
 
     [
       lotteryAddress
-    ] = await commissioner.methods.getCommissionedLotteries().call();
+    ] = await commission.methods.getCommissionedLotteries().call();
 
     lottery = await new web3.eth.Contract(
       JSON.parse(compiledLottery.interface),
@@ -45,8 +45,8 @@ describe("Basics", () => {
     );
   });
 
-  it("Test commissioner deployment and lottery commission.", () => {
-    assert.ok(commissioner.options.address);
+  it("Test commission deployment and lottery commission.", () => {
+    assert.ok(commission.options.address);
     assert.ok(lottery.options.address);
   });
 
@@ -65,7 +65,7 @@ describe("Basics", () => {
       from: accounts[0]
     });
 
-    const isCompleted = await lotter.methods.isCompleted().call({
+    const isCompleted = await lottery.methods.isCompleted().call({
       from: accounts[0]
     });
 
@@ -94,7 +94,7 @@ describe("Basics", () => {
       from: accounts[0]
     });
 
-    const isCompleted = await lotter.methods.isCompleted().call({
+    const isCompleted = await lottery.methods.isCompleted().call({
       from: accounts[0]
     });
 
@@ -150,22 +150,6 @@ describe("Basics", () => {
     const isCompleted = await lottery.methods.isCompleted().call({
       from: accounts[1]
     });
-
-    const summary = await lottery.methods
-      .getSummary()
-      .call({ from: accounts[0] });
-
-    const {
-      balance,
-      manager,
-      entryFee,
-      playerCount,
-      isCompleted,
-      winner,
-      amountWon
-    } = summary;
-
-    //    console.log("Amount won: ", amountWon);
 
     const afterBalance = await web3.eth.getBalance(accounts[1]);
     const difference = afterBalance - beforeBalance;
